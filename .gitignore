@@ -1,0 +1,5 @@
+*.png
+*.iml
+.idea/
+test-output/
+target/
