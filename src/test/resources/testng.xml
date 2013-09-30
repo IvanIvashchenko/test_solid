@@ -4,7 +4,7 @@
 	<test name="Test1">
 		<parameter name="path" value="/"/>
 		<classes>
-		    <class name="it.sevenbits.pages.HomePageTest"/>
+		    <class name="it.sevenbits.PageTest"/>
 		</classes>
 	</test>  
 </suite>
