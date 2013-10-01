@@ -1,0 +1,1 @@
+mvn <goal> -P <profile_name>
