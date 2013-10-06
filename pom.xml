@@ -87,10 +87,10 @@
         <user.username></user.username>
         <user.password></user.password>
         <grid2.hub></grid2.hub>
-        <site.url>http://luckytee.ru</site.url>
+        <site.url>http://localhost:3000</site.url>
         <browser.name>FIREFOX</browser.name>
         <browser.version>9</browser.version>
-        <browser.platform>Ubuntu</browser.platform>
+        <browser.platform>linux</browser.platform>
       </properties>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -129,10 +129,10 @@
         <user.username></user.username>
         <user.password></user.password>
         <grid2.hub></grid2.hub>
-        <site.url></site.url>
-        <browser.name></browser.name>
-        <browser.version></browser.version>
-        <browser.platform></browser.platform>
+        <site.url>http://luckytee.ru</site.url>
+        <browser.name>FIREFOX</browser.name>
+        <browser.version>9</browser.version>
+        <browser.platform>linux</browser.platform>
       </properties>
     </profile>
     <profile>
