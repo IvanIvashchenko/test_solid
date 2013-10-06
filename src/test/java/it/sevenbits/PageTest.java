@@ -51,7 +51,6 @@ public class PageTest extends TestBase {
         }
     }
 
-
     private String closeAlertAndGetItsText() {
         try {
             Alert alert = driver.switchTo().alert();
@@ -66,6 +65,4 @@ public class PageTest extends TestBase {
             acceptNextAlert = true;
         }
     }
-
-
 }
