@@ -1,27 +1,62 @@
 package it.sevenbits;
 
 import it.sevenbits.pages.TestBase;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 
 public class OrdersTest extends TestBase {
 
-    private boolean acceptNextAlert = true;
-
     @BeforeMethod
     public void setUp() {
-        driver.get(baseUrl + "/orders/find");
+        driver.get(baseUrl);
+    }
+
+    @BeforeClass
+    public void setUpUsers() throws SQLException {
+
+        Statement stmt = connection.createStatement();
+        stmt.execute("DELETE FROM orders WHERE recipient = 'test_recipient'");
+    }
+
+    @Test
+    public void testCreateOrder() {
+
+        WebElement element = this.findWebElement(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[1]/a[1]"));
+        assertNotNull(element);
+        element.click();
+        element = this.findWebElement(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[4]/form/div/input[1]"));
+        assertNotNull(element);
+        element.click();
+        element = this.findWebElement(By.id("order_recipient"));
+        assertNotNull(element);
+        element.sendKeys("test_recipient");
+        element = this.findWebElement(By.id("order_address_attributes_postcode"));
+        assertNotNull(element);
+        element.sendKeys("644644");
+        element = this.findWebElement(By.id("order_address_attributes_country_code"));
+        assertNotNull(element);
+        element = this.findWebElement(By.id("order_address_attributes_region"));
+        assertNotNull(element);
+        Select select = new Select(element);
+        select.deselectAll();
+        select.selectByVisibleText("Омская область");
+        element = this.findWebElement(By.id("order_address_attributes_other"));
+        assertNotNull(element);
+        element.sendKeys("test_address");
+        element = this.findWebElement(By.xpath("//*[@id=\"new_order\"]/div[7]/input"));
+        assertNotNull(element);
+        element.click();
+        assertEquals(driver.getCurrentUrl(), "http://test.robokassa.ru/ReturnResults.aspx?Culture=ru");
     }
 
     @Test
@@ -38,77 +73,5 @@ public class OrdersTest extends TestBase {
 //        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 //        this.closeAlertAndGetItsText();
 
-    }
-
-    @Test
-    public void testValidRegistration() {
-
-        WebElement element = this.findWebElement(By.linkText("Регистрация"));
-        assertNotNull(element);
-        element.click();
-        element = this.findWebElement(By.id("user_nickname"));
-        assertNotNull(element);
-        element.sendKeys("test_user");
-        element = this.findWebElement(By.id("user_email"));
-        assertNotNull(element);
-        element.sendKeys("test_mail@test.com");
-        element = this.findWebElement(By.id("user_password"));
-        assertNotNull(element);
-        element.sendKeys("test_password");
-        element = this.findWebElement(By.xpath("//div[@class='block']/fieldset/div[@class='submit']/input"));
-        assertNotNull(element);
-        element.click();
-        assertEquals(driver.getCurrentUrl(), baseUrl);
-    }
-
-    @Test
-    public void testInvalidRegistration() {
-
-        WebElement element = this.findWebElement(By.linkText("Регистрация"));
-        assertNotNull(element);
-        element.click();
-        assertNull(this.findWebElement(By.className("help-inline")));
-
-        element = this.findWebElement(By.id("user_nickname"));
-        assertNotNull(element);
-        element.sendKeys("");
-        element = this.findWebElement(By.id("user_email"));
-        assertNotNull(element);
-        element.sendKeys("");
-        element = this.findWebElement(By.id("user_password"));
-        assertNotNull(element);
-        element.sendKeys("");
-        element = this.findWebElement(By.xpath("//div[@class='block']/fieldset/div[@class='submit']/input"));
-        assertNotNull(element);
-        element.click();
-        assertEquals(driver.getCurrentUrl(), baseUrl + "users");
-        List<WebElement> elements= driver.findElements(By.className("help-inline"));
-        assertThat(elements).isNotNull().hasSize(3);
-    }
-
-    private WebElement findWebElement(By by) {
-
-        WebElement element = null;
-        try {
-            element = driver.findElement(by);
-        } catch (NoSuchElementException e) {
-            //Do nothing
-        }
-        return element;
-    }
-
-    private String closeAlertAndGetItsText() {
-        try {
-            Alert alert = driver.switchTo().alert();
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
-        }
     }
 }

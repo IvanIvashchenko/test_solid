@@ -5,6 +5,7 @@
         <parameter name="path" value="/"/>
         <classes>
             <class name="it.sevenbits.OrdersTest"/>
+            <class name="it.sevenbits.UsersTest"/>
         </classes>
     </test>  
 </suite>

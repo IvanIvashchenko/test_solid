@@ -1,7 +1,6 @@
 package it.sevenbits;
 
 import it.sevenbits.pages.TestBase;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.annotations.BeforeMethod;
@@ -12,9 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 
 public class PageTest extends TestBase {
-
-    private boolean acceptNextAlert = true;
-    private StringBuffer verificationErrors = new StringBuffer();
 
     @BeforeMethod
     public void setUp() {
@@ -48,21 +44,6 @@ public class PageTest extends TestBase {
             return true;
         } catch (NoSuchElementException e) {
             return false;
-        }
-    }
-
-    private String closeAlertAndGetItsText() {
-        try {
-            Alert alert = driver.switchTo().alert();
-            String alertText = alert.getText();
-            if (acceptNextAlert) {
-                alert.accept();
-            } else {
-                alert.dismiss();
-            }
-            return alertText;
-        } finally {
-            acceptNextAlert = true;
         }
     }
 }
