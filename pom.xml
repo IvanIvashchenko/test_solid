@@ -106,7 +106,7 @@
         <user.password></user.password>
         <grid2.hub></grid2.hub>
         <site.url>http://localhost:3000/</site.url>
-        <browser.name>FIREFOX</browser.name>
+        <browser.name>firefox</browser.name>
         <browser.version>9</browser.version>
         <browser.platform>linux</browser.platform>
       </properties>
@@ -148,7 +148,7 @@
         <user.password></user.password>
         <grid2.hub></grid2.hub>
         <site.url>http://luckytee.ru/</site.url>
-        <browser.name>FIREFOX</browser.name>
+        <browser.name>firefox</browser.name>
         <browser.version>9</browser.version>
         <browser.platform>linux</browser.platform>
       </properties>

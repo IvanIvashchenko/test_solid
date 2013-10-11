@@ -3,7 +3,9 @@ package it.sevenbits;
 import it.sevenbits.pages.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeClass;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -24,20 +26,16 @@ public class UsersTest extends TestBase {
         driver.get(baseUrl);
     }
 
-    @BeforeClass
-    public void setUpUsers() throws SQLException {
-
-        Statement stmt = connection.createStatement();
-        stmt.execute("DELETE FROM users WHERE email = 'test_mail@test.com'");
-    }
-
     @Test
     public void testValidRegistration() throws SQLException {
 
         Statement stmt = connection.createStatement();
-        WebElement element = this.findWebElement(By.linkText("Регистрация"));
+        WebElement element = this.findWebElement(By.xpath("//a[text()='Регистрация']"));
         assertNotNull(element);
         element.click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("new_user")));
+
         element = this.findWebElement(By.id("user_nickname"));
         assertNotNull(element);
         element.sendKeys("test_user");
@@ -57,11 +55,13 @@ public class UsersTest extends TestBase {
     @Test
     public void testInvalidRegistration() {
 
-        WebElement element = this.findWebElement(By.linkText("Регистрация"));
+        WebElement element = this.findWebElement(By.xpath("//a[text()='Регистрация']"));
         assertNotNull(element);
         element.click();
-        assertNull(this.findWebElement(By.className("help-inline")));
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("new_user")));
 
+        assertNull(this.findWebElement(By.className("help-inline")));
         element = this.findWebElement(By.id("user_nickname"));
         assertNotNull(element);
         element.sendKeys("");
@@ -77,5 +77,12 @@ public class UsersTest extends TestBase {
         assertEquals(driver.getCurrentUrl(), baseUrl + "users");
         List<WebElement> elements= driver.findElements(By.className("help-inline"));
         assertThat(elements).isNotNull().hasSize(3);
+    }
+
+    @AfterClass
+    public void removeTestUser() throws SQLException {
+
+        Statement stmt = connection.createStatement();
+        stmt.execute("DELETE FROM users WHERE email = 'test_mail@test.com'");
     }
 }

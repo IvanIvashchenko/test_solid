@@ -1,8 +1,7 @@
 package it.sevenbits.webdriver;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+import com.opera.core.systems.OperaDriver;
+import it.sevenbits.util.Browser;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
@@ -12,18 +11,14 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.iphone.IPhoneDriver;
-import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
-import com.opera.core.systems.OperaDriver;
-
-import it.sevenbits.util.Browser;
-import it.sevenbits.webdriver.AuthenticatedHtmlUnitDriver;
-
-import it.sevenbits.util.Browser;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /*
  * Factory to instantiate a WebDriver object. It returns an instance of the driver (local invocation) or an instance of RemoteWebDriver
@@ -80,9 +75,9 @@ public class WebDriverFactory {
 			return getInstance(browserName, username, password);
 		}
 
-		if (CHROME.equals(browserName)) {
+		if (CHROME.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.chrome();
-		} else if (FIREFOX.equals(browserName)) {
+		} else if (FIREFOX.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.firefox();
 			
 			FirefoxProfile ffProfile = new FirefoxProfile();
@@ -102,15 +97,15 @@ public class WebDriverFactory {
 			.setCapability(
 					InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,
 					true);
-		} else if (PHANTOMJS.equals(browserName)) {
+		} else if (PHANTOMJS.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.phantomjs();
-		} else if (OPERA.equals(browserName)) {
+		} else if (OPERA.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.opera();
-		} else if (SAFARI.equals(browserName)) {
+		} else if (SAFARI.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.safari();
-		} else if (ANDROID.equals(browserName)) {
+		} else if (ANDROID.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.android();
-		} else if (IPHONE.equals(browserName)) {
+		} else if (IPHONE.equalsIgnoreCase(browserName)) {
 			capability = DesiredCapabilities.iphone();
 		} else {
 
