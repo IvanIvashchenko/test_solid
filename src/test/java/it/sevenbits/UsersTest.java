@@ -14,10 +14,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.assertTrue;
 
 public class UsersTest extends TestBase {
 
@@ -31,50 +27,50 @@ public class UsersTest extends TestBase {
 
         Statement stmt = connection.createStatement();
         WebElement element = this.findWebElement(By.xpath("//a[text()='Регистрация']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("new_user")));
 
         element = this.findWebElement(By.id("user_nickname"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("test_user");
         element = this.findWebElement(By.id("user_email"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("test_mail@test.com");
         element = this.findWebElement(By.id("user_password"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("test_password");
         element = this.findWebElement(By.xpath("//div[@class='block']/fieldset/div[@class='submit']/input"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
-        assertEquals(driver.getCurrentUrl(), baseUrl);
-        assertTrue(stmt.execute("SELECT * FROM users WHERE email = 'test_mail@test.com'"));
+        assertThat(driver.getCurrentUrl()).isEqualToIgnoringCase(baseUrl);
+        assertThat(stmt.execute("SELECT * FROM users WHERE email = 'test_mail@test.com'")).isTrue();
     }
 
     @Test
     public void testInvalidRegistration() {
 
         WebElement element = this.findWebElement(By.xpath("//a[text()='Регистрация']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("new_user")));
 
-        assertNull(this.findWebElement(By.className("help-inline")));
+        assertThat(this.findWebElement(By.className("help-inline"))).isNull();
         element = this.findWebElement(By.id("user_nickname"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("");
         element = this.findWebElement(By.id("user_email"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("");
         element = this.findWebElement(By.id("user_password"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("");
         element = this.findWebElement(By.xpath("//div[@class='block']/fieldset/div[@class='submit']/input"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
-        assertEquals(driver.getCurrentUrl(), baseUrl + "users");
+        assertThat(driver.getCurrentUrl()).isEqualToIgnoringCase(baseUrl + "users");
         List<WebElement> elements= driver.findElements(By.className("help-inline"));
         assertThat(elements).isNotNull().hasSize(3);
     }

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
 public class OrdersTest extends TestBase {
 
@@ -23,7 +22,7 @@ public class OrdersTest extends TestBase {
         driver.get(baseUrl);
     }
 
-    @BeforeClass
+    @AfterClass
     public void setUpUsers() throws SQLException {
 
         Statement stmt = connection.createStatement();
@@ -34,30 +33,30 @@ public class OrdersTest extends TestBase {
     public void testCreateOrder() {
 
         WebElement element = this.findWebElement(By.xpath("//div[@class='tee-info-select-size']/a[1]/div[text()='44']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='js-tee-shirt-icon tee-man']")));
         element = this.findWebElement(By.xpath("//input[@value='Купить']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         element = this.findWebElement(By.id("order_recipient"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("test_recipient");
         element = this.findWebElement(By.id("order_address_attributes_postcode"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("644644");
         element = this.findWebElement(By.id("order_address_attributes_country_code"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element = this.findWebElement(By.id("order_address_attributes_region"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         Select select = new Select(element);
         select.selectByVisibleText("Омская область");
         element = this.findWebElement(By.id("order_address_attributes_other"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.sendKeys("test_address");
         element = this.findWebElement(By.xpath("//input[@value='ОПЛАТИТЬ']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ctl00_ILogo")));
         assertThat(driver.getCurrentUrl()).contains("http://test.robokassa.ru/ReturnResults.aspx");
@@ -67,7 +66,7 @@ public class OrdersTest extends TestBase {
     public void testCreateInvalidOrder() {
 
         WebElement element = this.findWebElement(By.xpath("//input[@value='Купить']"));
-        assertNotNull(element);
+        assertThat(element).isNotNull();
         element.click();
         String alertMsg = this.closeAlertAndGetItsText();
         assertThat(alertMsg).isEqualToIgnoringCase("Сначала выберите размер!");
