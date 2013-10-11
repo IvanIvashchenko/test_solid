@@ -35,7 +35,6 @@ public class UsersTest extends TestBase {
     public void testValidRegistration() throws SQLException {
 
         Statement stmt = connection.createStatement();
-//        assertThat(stmt.executeQuery("SELECT * FROM users WHERE email = 'test_mail@test.com'")).isNotNull();
         WebElement element = this.findWebElement(By.linkText("Регистрация"));
         assertNotNull(element);
         element.click();

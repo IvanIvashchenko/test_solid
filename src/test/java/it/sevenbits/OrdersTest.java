@@ -1,9 +1,12 @@
 package it.sevenbits;
 
 import it.sevenbits.pages.TestBase;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,7 +37,9 @@ public class OrdersTest extends TestBase {
         WebElement element = this.findWebElement(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[1]/a[1]"));
         assertNotNull(element);
         element.click();
-        element = this.findWebElement(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div[4]/form/div/input[1]"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='js-tee-shirt-icon tee-man']")));
+        element = this.findWebElement(By.xpath("//input[@value='Купить']"));
         assertNotNull(element);
         element.click();
         element = this.findWebElement(By.id("order_recipient"));
@@ -60,18 +65,29 @@ public class OrdersTest extends TestBase {
     }
 
     @Test
-    public void testFindOrder() {
+    public void testCreateUnvalidOrder() {
 
-        WebElement element = this.findWebElement(By.name("code"));
-        assertNotNull(element);
-        element.sendKeys("invalid code");
-        element = this.findWebElement(By.xpath("/html/body/div[1]/div/div[2]/form/button"));
+        WebElement element = this.findWebElement(By.xpath("//input[@value='Купить']"));
         assertNotNull(element);
         element.click();
-        element = this.findWebElement(By.className("alert"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+
+    }
+
+//    @Test
+//    public void testFindOrder() {
+//
+//        WebElement element = this.findWebElement(By.name("code"));
+//        assertNotNull(element);
+//        element.sendKeys("invalid code");
+//        element = this.findWebElement(By.xpath("/html/body/div[1]/div/div[2]/form/button"));
+//        assertNotNull(element);
+//        element.click();
+//        element = this.findWebElement(By.className("alert"));
 //        WebDriverWait wait = new WebDriverWait(driver, 5);
 //        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 //        this.closeAlertAndGetItsText();
-
-    }
+//
+//    }
 }
