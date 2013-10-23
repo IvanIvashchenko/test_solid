@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -23,10 +24,28 @@ public class OrdersTest extends TestBase {
     }
 
     @AfterClass
-    public void setUpUsers() throws SQLException {
+    public void setUpOrders() throws SQLException {
 
         Statement stmt = connection.createStatement();
         stmt.execute("DELETE FROM orders WHERE recipient = 'test_recipient'");
+    }
+
+    @Test
+    public void testCreateInvalidOrder() {
+
+        WebElement element = this.findWebElement(By.xpath("//div[@class='tee-info-select-size']/a[1]/div[text()='44']"));
+        assertThat(element).isNotNull();
+        element.click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='js-tee-shirt-icon tee-man']")));
+        element = this.findWebElement(By.xpath("//input[@value='Купить']"));
+        assertThat(element).isNotNull();
+        element.click();
+        element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@value='ОПЛАТИТЬ']")));
+        element.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("help-inline")));
+        List<WebElement> elements= driver.findElements(By.className("help-inline"));
+        assertThat(elements).isNotNull().hasSize(3);
     }
 
     @Test
@@ -63,7 +82,7 @@ public class OrdersTest extends TestBase {
     }
 
     @Test
-    public void testCreateInvalidOrder() {
+    public void testCreateEmptyOrder() {
 
         WebElement element = this.findWebElement(By.xpath("//input[@value='Купить']"));
         assertThat(element).isNotNull();
@@ -72,19 +91,19 @@ public class OrdersTest extends TestBase {
         assertThat(alertMsg).isEqualToIgnoringCase("Сначала выберите размер!");
     }
 
-//    @Test
-//    public void testFindOrder() {
-//
-//        WebElement element = this.findWebElement(By.name("code"));
-//        assertNotNull(element);
-//        element.sendKeys("invalid code");
-//        element = this.findWebElement(By.xpath("/html/body/div[1]/div/div[2]/form/button"));
-//        assertNotNull(element);
-//        element.click();
-//        element = this.findWebElement(By.className("alert"));
-//        WebDriverWait wait = new WebDriverWait(driver, 5);
-//        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-//        this.closeAlertAndGetItsText();
-//
-//    }
+    @Test
+    public void testFindOrder() {
+
+        String findOrderUrl = baseUrl + "orders/find";
+        driver.get(findOrderUrl);
+        WebElement element = this.findWebElement(By.name("code"));
+        assertThat(element).isNotNull();
+        element.sendKeys("invalid code");
+        element = this.findWebElement(By.xpath("/html/body/div[1]/div/div[2]/form/button"));
+        assertThat(element).isNotNull();
+        element.click();
+        element = this.findWebElement(By.className("alert"));
+        assertThat(element).isNotNull();
+        assertThat(driver.getCurrentUrl()).isEqualToIgnoringCase(findOrderUrl);
+    }
 }
