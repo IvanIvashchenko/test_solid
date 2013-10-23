@@ -42,6 +42,7 @@ public class OrdersTest extends TestBase {
         assertThat(element).isNotNull();
         element.click();
         element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@value='ОПЛАТИТЬ']")));
+        assertThat(this.findWebElement(By.className("help-inline"))).isNull();
         element.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("help-inline")));
         List<WebElement> elements= driver.findElements(By.className("help-inline"));

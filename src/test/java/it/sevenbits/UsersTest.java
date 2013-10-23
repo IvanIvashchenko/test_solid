@@ -75,6 +75,25 @@ public class UsersTest extends TestBase {
         assertThat(elements).isNotNull().hasSize(3);
     }
 
+    @Test
+    public void testInvalidSignIn() {
+
+        WebElement element = this.findWebElement(By.xpath("//a[text()='Войти на сайт']"));
+        assertThat(element).isNotNull();
+        element.click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_email")));
+        assertThat(this.findWebElement(By.className("help-inline"))).isNull();
+
+        element = this.findWebElement(By.xpath("//fieldset/div[@class='submit']/input"));
+        assertThat(element).isNotNull();
+        element.click();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("help-inline")));
+        assertThat(driver.getCurrentUrl()).isEqualToIgnoringCase(baseUrl + "users/sign_in");
+        element = this.findWebElement(By.className("alert"));
+        assertThat(element).isNotNull();
+    }
+
     @AfterClass
     public void removeTestUser() throws SQLException {
 
